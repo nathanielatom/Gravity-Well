@@ -152,13 +152,13 @@ def lvl_8():
     game.hero = "rocket"
 
 def run_lvl(lvl_num):
-    game.__init__(settings.Settings.screen_size)
+    game.__init__()
     game.lvl = lvl_num
     globals()["lvl_" + str(lvl_num)]()
     game.run()
 
 def launcher(num_lvls):
-    globals()["game"] = engine.Game(settings.Settings.screen_size)
+    globals()["game"] = engine.Game()
     show_instructions()
     for lvl_num in range(num_lvls):
         run_lvl(lvl_num)
