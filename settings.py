@@ -1,0 +1,35 @@
+class Settings():
+
+    screen_size = (1280, 975)
+    fps = 30
+    angle_modifier = 1.0
+    speed_modifier = 0.1
+    max_speed = 24.0
+    min_speed = 12.0
+    min_escape_speed = 4.0
+    g_modifier = 0.5
+    g_max = 8.0
+    g_min = 0.5
+    offscreen_reset_time = 8
+    max_escape_well_time = 0.08
+    text_size = 3e-5
+    percent_point_modifier = 0.075
+    point_modifier = 1000
+    point_max_increment_distance = 75
+    vel_info_x_gap = 35
+    vel_info_y_down = 6
+    vel_info_angle_width = 130
+    info_read_delay = 6000
+    crash_delay = 1200
+    shade_of_death = 42
+    colour_of_death = (236, 30, 20)
+    widget_colour = (232, 192, 8)
+    instant_replays = 5
+    replay_colours = (1.2, 1.3, 2.8)
+    previous_attempts_info_pos = (32, 20)
+    y_info_gap = 10
+    replay_info_relative_pos = (18, 50)
+    pause_reset_info_x = 30
+    pause_info_y_up = 74
+    observe_launch_info_x = 350
+    observe_info_y_down = 50
