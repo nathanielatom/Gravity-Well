@@ -3,6 +3,7 @@ from pygame.locals import *
 
 SLIDER_WIDGET_CLICK = USEREVENT + 2
 
+
 class SliderWidget(object):
 
     # Hand Cursor

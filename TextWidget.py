@@ -35,6 +35,7 @@ from pygame.locals import *
 
 TEXT_WIDGET_CLICK = USEREVENT + 1
 
+
 class TextWidget(object):
     """ This is a helper class for handling text in PyGame.  It performs
     some basic highlighting and tells you when the text has been clicked.

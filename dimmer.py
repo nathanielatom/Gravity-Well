@@ -37,6 +37,7 @@ dim.undim()
 
 import pygame
 
+
 class Dimmer:
     def __init__(self, keepalive=0):
         self.keepalive=keepalive
