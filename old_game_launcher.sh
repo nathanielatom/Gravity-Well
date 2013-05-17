@@ -1,4 +1,4 @@
 #!/bin/bash
 clear
-cd Desktop/Gravity\ Well
+cd ~/Gravity\ Well
 python levels.py
