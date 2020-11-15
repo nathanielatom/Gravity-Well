@@ -190,7 +190,7 @@ class Body(pygame.sprite.Sprite):
     # Should use floats and keep above ~1.0 to reduce low-acceleration smoothing lag
     G = settings.Settings.G_default
 
-    def __init__(self, surface, position, mass, point_lvls=(), particle=False, rebel_scum=(), velocity=(0, 0)):
+    def __init__(self, surface, position, mass, point_lvls=[], particle=False, rebel_scum=(), velocity=(0, 0)):
         """ Initializes body object. Parameters: surface - pygame surface (returned by load_image), position - 2-tuple
         vector with the body's initial position (top-left corner of surface) in a 1-500 point scale, mass - used to
         calculate gravitation, point_lvls - scores at which info-bits regarding the body are displayed,
@@ -448,7 +448,7 @@ class Game:
             squire = (coordinate / 500.0) * min(self.screen.get_size())
             return (squire, squire)
 
-    def create_body(self, name, size, position, density=1.0, point_lvls=(), particle=False, rebel_scum=(),
+    def create_body(self, name, size, position, density=1.0, point_lvls=[], particle=False, rebel_scum=(),
                     velocity=(0.0, 0.0)):
         """ Creates a body called name, with the given size (converted from a 1-500 point scale),
         position (same scale for each coordinate), optional: density used to calculate the body's mass, list of scores
