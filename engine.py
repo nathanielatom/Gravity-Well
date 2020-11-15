@@ -17,11 +17,7 @@ def load_image(name, colorkey=None):
     """ Returns a pygame surface object loaded from a PNG file with name (name) in the local/data directory.
     """
     fullname = os.path.join('data', name)
-    try:
-        image = pygame.image.load(fullname)
-    except pygame.error, message:
-        print 'Cannot load image:', fullname
-        raise SystemExit, message
+    image = pygame.image.load(fullname)
     image = image.convert_alpha()
     if colorkey is not None:
         if colorkey is -1:
@@ -73,11 +69,11 @@ def vector_point_exponentiate(vector, exponent_vector):
     resultant = None
     if type(vector) == tuple:
         if type(exponent_vector) == tuple and len(vector) == len(exponent_vector):
-            resultant = range(len(vector))
+            resultant = list(range(len(vector)))
             for index, entry in enumerate(vector):
                 resultant[index] = entry ** exponent_vector[index]
         elif type(exponent_vector) in (int, float):
-            resultant = range(len(vector))
+            resultant = list(range(len(vector)))
             for index, entry in enumerate(vector):
                 resultant[index] = entry ** exponent_vector
         if resultant:
@@ -107,11 +103,11 @@ def vector_point_multiply(vector, multiple_vector):
     resultant = None
     if type(vector) == tuple:
         if type(multiple_vector) == tuple and len(vector) == len(multiple_vector):
-            resultant = range(len(vector))
+            resultant = list(range(len(vector)))
             for index, entry in enumerate(vector):
                 resultant[index] = entry * multiple_vector[index]
         elif type(multiple_vector) in (int, float):
-            resultant = range(len(vector))
+            resultant = list(range(len(vector)))
             for index, entry in enumerate(vector):
                 resultant[index] = entry * multiple_vector
         if resultant:
@@ -127,14 +123,14 @@ def vector_cap(vector, cap_vector):
     resultant = None
     if type(vector) == tuple:
         if type(cap_vector) == tuple and len(vector) == len(cap_vector):
-            resultant = range(len(vector))
+            resultant = list(range(len(vector)))
             for index, entry in enumerate(vector):
                 if entry > cap_vector[index]:
                     resultant[index] = cap_vector[index]
                 else:
                     resultant[index] = entry
         elif type(cap_vector) in (int, float):
-            resultant = range(len(vector))
+            resultant = list(range(len(vector)))
             for index, entry in enumerate(vector):
                 if entry > cap_vector:
                     resultant[index] = cap_vector
@@ -256,7 +252,7 @@ class Body(pygame.sprite.Sprite):
         """
         rebel_bodies = []
         for name in self.rebel_scum:
-            if name in bodies.keys():
+            if name in bodies:
                 rebel_bodies.append(bodies[name])
         return rebel_bodies
 
@@ -478,14 +474,14 @@ class Game:
     def draw_all_bodies(self):
         """ Draws all bodies to the screen and also modifies self.update_rects. Affective method.
         """
-        for name in self.bodies.keys():
+        for name in self.bodies:
             self.draw_body(name)
 
     def draw_all_particles(self):
         """ Draws all particles to the screen and also modifies self.update_rects. Affective method.
         """
         if not self.current_overlap:
-            for name in self.bodies.keys():
+            for name in self.bodies:
                 if self.bodies[name].particle:
                     self.draw_body(name)
         else:
@@ -502,7 +498,7 @@ class Game:
         """ Erases all bodies from the screen and also modifies self.update_rects,
         and is meant to be called before draw_all_bodies() or draw_all_particles(). Affective method.
         """
-        for name in self.bodies.keys():
+        for name in self.bodies:
             self.erase_body(name)
 
     def erase_all_particles(self):
@@ -511,7 +507,7 @@ class Game:
         """
         self.current_overlap = self.check_all_overlap()
         if not self.current_overlap:
-            for name in self.bodies.keys():
+            for name in self.bodies:
                 if self.bodies[name].particle:
                     self.erase_body(name)
         else:
@@ -737,7 +733,7 @@ class Game:
         """ Shows the player info-bits regarding certain bodies whose accumulated score (based on the launchable
         hero's position in their gravitational field) surpasses the score levels set in body.point_lvls.
         """
-        for body_name in self.bodies.keys():
+        for body_name in self.bodies:
             for index, point_lvl in enumerate(self.bodies[body_name].point_lvls):
                 if self.bodies[body_name].points > point_lvl:
                     factname = "fact_lvl_%d_%s_%d" % (self.lvl, body_name, index)
@@ -750,7 +746,7 @@ class Game:
         number of pixels involved in the collision. Functional method.
         """
         collision_status = {}
-        body_list = self.bodies.items()
+        body_list = list(self.bodies.items())
         for index in range(len(body_list)):
             for inceptiondex in range(index + 1, len(body_list)):
                 collision_area = body_list[index][1].check_collision(body_list[inceptiondex][1])
@@ -763,7 +759,7 @@ class Game:
         """ Returns true if any body.rects or widget.rects are overlapping, false otherwise. Functional method.
         """
         overlap = False
-        body_list = self.bodies.values()
+        body_list = list(self.bodies.values())
         for index in range(len(body_list)):
             for inceptiondex in range(index + 1, len(body_list)):
                 if body_list[index].visible and body_list[inceptiondex].visible:
@@ -776,7 +772,7 @@ class Game:
     def special_collision(self):
         """ Used to check if hero crashes, if so, resets. Affective and functional method.
         """
-        collision = self.check_all_collisions().keys()
+        collision = list(self.check_all_collisions().keys())
         if (self.get_hero(), self.target) in collision or (self.target, self.get_hero()) in collision:
             self.quit_lvl = True
         if self.atmosphere and (not ((("earth", self.get_hero()) in collision) or ((self.get_hero(),
@@ -857,11 +853,11 @@ class Game:
             self.update_rects.append(self.hero_launcher_rect.copy())
             self.erase_all_info()
             if self.replay and self.game_state == "action" and self.launch_time:
-                if not "collision_body" in self.replay[self.replay_count].keys():
+                if not "collision_body" in self.replay[self.replay_count]:
                     self.replay[self.replay_count]["collision_body"] = "reset"
                     self.replay[self.replay_count]["time"] = self.get_time()
-                real_count_list = range(self.replay_count, -1, -1)
-                if (settings.Settings.instant_replays - 1) in self.replay.keys():
+                real_count_list = list(range(self.replay_count, -1, -1))
+                if (settings.Settings.instant_replays - 1) in self.replay:
                     for index in range((settings.Settings.instant_replays - 1), self.replay_count, -1):
                         real_count_list.append(index)
                 for real_count, instant_replays in zip(real_count_list, range(settings.Settings.instant_replays)):
@@ -1141,8 +1137,8 @@ class Game:
                         init_real_count = self.replay_count - 1
                     else:
                         init_real_count = (settings.Settings.instant_replays - 1)
-                    real_count_list = range(init_real_count, -1, -1)
-                    if (settings.Settings.instant_replays - 1) in self.replay.keys():
+                    real_count_list = list(range(init_real_count, -1, -1))
+                    if (settings.Settings.instant_replays - 1) in self.replay:
                         for index in range((settings.Settings.instant_replays - 1), init_real_count, -1):
                             real_count_list.append(index)
                     for real_count, instant_replays in zip(real_count_list, range(settings.Settings.instant_replays)):

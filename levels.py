@@ -225,7 +225,7 @@ def run_lvl(lvl_num):
 def launcher(num_lvls):
     """ Runs all game levels up to the integer parameter.
     """
-    globals()["game"] = engine.Game()
+    globals()["game"] = engine.Game(screen_size=(800, 600))
     show_instructions()
     for lvl_num in range(num_lvls):
         run_lvl(lvl_num)
