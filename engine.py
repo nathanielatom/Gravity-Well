@@ -219,8 +219,9 @@ class Body(pygame.sprite.Sprite):
         # Stores acculated score
         self.points = 0.0
         # used to display info-bits when it surpasses the values in
-        self.point_lvls = point_lvls
-
+        self.point_lvls = []
+        if type(point_lvls) == int: self.point_lvls.append(point_lvls)
+        else: self.point_lvls = list(point_lvls)
         self.visible = True
         self.particle = particle
         self.init_velocity = velocity
